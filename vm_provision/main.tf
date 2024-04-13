@@ -13,6 +13,11 @@ provider "aws" {
   secret_key = var.secret_key
 }
 
+resource "aws_key_pair" "local_key_pair" {
+  key_name = "local_key_pair"
+  public_key = file("../env/ssh-key.pub")
+}
+
 # Master node
 resource "aws_instance" "master" {
   
@@ -22,6 +27,8 @@ resource "aws_instance" "master" {
     Name = "master"
     Project = "DevOps Challenge"
   }
+  key_name = aws_key_pair.local_key_pair.key_name
+
   associate_public_ip_address = true
   subnet_id = "${aws_subnet.k3s_subnet[0].id}"
   vpc_security_group_ids = ["${aws_security_group.k3s_master_sg.id}"]
@@ -36,6 +43,8 @@ resource "aws_instance" "worker-1" {
     Name = "worker-1"
     Project = "DevOps Challenge"
   }
+  key_name = aws_key_pair.local_key_pair.key_name
+
   associate_public_ip_address = true
   subnet_id = "${aws_subnet.k3s_subnet[0].id}"
   vpc_security_group_ids = ["${aws_security_group.k3s_worker_sg.id}"]
@@ -49,6 +58,8 @@ resource "aws_instance" "worker-2" {
     Name = "worker-2"
     Project = "DevOps Challenge"
   }
+  key_name = aws_key_pair.local_key_pair.key_name
+
   associate_public_ip_address = true
   subnet_id = "${aws_subnet.k3s_subnet[0].id}"
   vpc_security_group_ids = ["${aws_security_group.k3s_worker_sg.id}"]

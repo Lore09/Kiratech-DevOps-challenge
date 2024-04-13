@@ -27,6 +27,13 @@ resource "aws_security_group" "k3s_master_sg" {
 resource "aws_security_group" "k3s_worker_sg" {
   vpc_id = aws_vpc.k3s_vpc.id
 
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = [format("%s/32", var.trusted_ip)]
+  }
+
   # Allow outgoing traffic to all ports
   egress {
     from_port   = 0
