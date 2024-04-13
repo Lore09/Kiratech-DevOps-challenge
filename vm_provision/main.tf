@@ -24,6 +24,7 @@ resource "aws_instance" "master" {
   instance_type = "t3.micro"
   ami = "ami-04f9a173520f395dd"
   tags = {
+    Type = "master"
     Name = "master"
     Project = "DevOps Challenge"
   }
@@ -32,6 +33,8 @@ resource "aws_instance" "master" {
   associate_public_ip_address = true
   subnet_id = "${aws_subnet.k3s_subnet[0].id}"
   vpc_security_group_ids = ["${aws_security_group.k3s_master_sg.id}"]
+
+  user_data = "${file("init-vm")}"
 }
 
 # Worker nodes
@@ -40,6 +43,7 @@ resource "aws_instance" "worker-1" {
   instance_type = "t3.micro"
   ami = "ami-04f9a173520f395dd"
   tags = {
+    Type = "worker"
     Name = "worker-1"
     Project = "DevOps Challenge"
   }
@@ -48,6 +52,8 @@ resource "aws_instance" "worker-1" {
   associate_public_ip_address = true
   subnet_id = "${aws_subnet.k3s_subnet[0].id}"
   vpc_security_group_ids = ["${aws_security_group.k3s_worker_sg.id}"]
+  
+  user_data = "${file("init-vm")}"
 }
 
 resource "aws_instance" "worker-2" {
@@ -55,6 +61,7 @@ resource "aws_instance" "worker-2" {
   instance_type = "t3.micro"
   ami = "ami-04f9a173520f395dd"
   tags = {
+    Type = "worker"
     Name = "worker-2"
     Project = "DevOps Challenge"
   }
@@ -63,6 +70,8 @@ resource "aws_instance" "worker-2" {
   associate_public_ip_address = true
   subnet_id = "${aws_subnet.k3s_subnet[0].id}"
   vpc_security_group_ids = ["${aws_security_group.k3s_worker_sg.id}"]
+
+  user_data = "${file("init-vm")}"
 }
 
 output "master_address" {
