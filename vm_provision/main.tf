@@ -1,105 +1,65 @@
 terraform {
-  required_version = ">= 1.5" 
   required_providers {
-    virtualbox = {
-      source = "terra-farm/virtualbox"
-      version = "0.2.2-alpha.1"
-    }
-
-    time = {
-      source = "hashicorp/time"
-      version = "0.11.1"
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 5.0"
     }
   }
 }
 
-resource "virtualbox_vm" "master" {
-  count = 1
-  name      = "master"
-  #image     = "https://app.vagrantup.com/ubuntu/boxes/bionic64/versions/20210916.0.0/providers/virtualbox.box"
-  image = "${path.module}/ubuntu.box"
-  cpus      = 2
-  memory    = "2048 mib"
-
-  network_adapter {
-    type           = "bridged"
-    host_interface = "Intel(R) Wi-Fi 6E AX211 160MHz"
-  }
-  
-  provisioner "file" {
-    source      = "${path.module}/../env/ssh-key.pub"
-    destination = "/tmp/ssh-key.pub"
-  }
-  
-  provisioner "remote-exec" {
-    inline = [
-      "sudo mkdir -p /root/.ssh",
-      "sudo mv /tmp/ssh-key.pub /root/.ssh/authorized_keys",
-      "sudo chmod 600 /root/.ssh/authorized_keys"
-    ]
-  }
-
-  connection {
-    type        = "ssh"
-    user        = "vagrant"
-    password = "vagrant"
-    #private_key = file("${path.module}/../env/ssh-key.pub")
-    host        = self.network_adapter[0].ipv4_address
-  }
+provider "aws" {
+  region = var.region
+  access_key = var.access_key
+  secret_key = var.secret_key
 }
 
-resource "virtualbox_vm" "worker" {
-  count      = 2
-  name       = "worker-${count.index}"
-  #image     = "https://app.vagrantup.com/ubuntu/boxes/bionic64/versions/20210916.0.0/providers/virtualbox.box"
-  image = "${path.module}/ubuntu.box"
-  cpus      = 2
-  memory    = "2048 mib"
+resource "aws_instance" "master" {
   
-  network_adapter {
-    type           = "bridged"
-    host_interface = "Intel(R) Wi-Fi 6E AX211 160MHz"
+  instance_type = "t3.micro"
+  ami = "ami-04f9a173520f395dd"
+  tags = {
+    Name = "master"
+    Project = "DevOps Challenge"
   }
-  
-  provisioner "file" {
-    source      = "${path.module}/../env/ssh-key.pub"
-    destination = "/tmp/ssh-key.pub"
-  }
-  
-  provisioner "remote-exec" {
-    inline = [
-      "sudo mkdir -p /root/.ssh",
-      "sudo mv /tmp/ssh-key.pub /root/.ssh/authorized_keys",
-      "sudo chmod 600 /root/.ssh/authorized_keys"
-    ]
-  }
-
-  connection {
-    type        = "ssh"
-    user        = "vagrant"
-    password = "vagrant"
-    #private_key = file("${path.module}/../env/ssh-key.pub")
-    host        = self.network_adapter[0].ipv4_address
-  }
-
+  associate_public_ip_address = true
+  subnet_id = "${aws_subnet.k3s_subnet[0].id}"
+  vpc_security_group_ids = ["${aws_security_group.k3s_master_sg.id}"]
 }
 
-resource "time_sleep" "wait_2_minutes" {
-  depends_on = [virtualbox_vm.master, virtualbox_vm.worker]
-
-  create_duration = "2m"
+resource "aws_instance" "worker-1" {
+  
+  instance_type = "t3.micro"
+  ami = "ami-04f9a173520f395dd"
+  tags = {
+    Name = "worker-1"
+    Project = "DevOps Challenge"
+  }
+  associate_public_ip_address = true
+  subnet_id = "${aws_subnet.k3s_subnet[0].id}"
+  vpc_security_group_ids = ["${aws_security_group.k3s_worker_sg.id}"]
 }
 
-output "master_ip" {
-  depends_on = [ 
-    time_sleep.wait_2_minutes
-   ]
-  value = virtualbox_vm.master[0].network_adapter[0].ipv4_address
+resource "aws_instance" "worker-2" {
+  
+  instance_type = "t3.micro"
+  ami = "ami-04f9a173520f395dd"
+  tags = {
+    Name = "worker-2"
+    Project = "DevOps Challenge"
+  }
+  associate_public_ip_address = true
+  subnet_id = "${aws_subnet.k3s_subnet[0].id}"
+  vpc_security_group_ids = ["${aws_security_group.k3s_worker_sg.id}"]
 }
 
-output "worker_ips" {
-  depends_on = [ 
-    time_sleep.wait_2_minutes
-    ]
-  value = virtualbox_vm.worker[*].network_adapter[0].ipv4_address
+output "master_address" {
+  value = aws_instance.master.public_ip
+}
+
+output "worker-1_address" {
+  value = aws_instance.worker-1.public_ip
+}
+
+output "worker-2_address" {
+  value = aws_instance.worker-2.public_ip
 }
