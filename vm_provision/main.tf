@@ -13,6 +13,7 @@ provider "aws" {
   secret_key = var.secret_key
 }
 
+# Master node
 resource "aws_instance" "master" {
   
   instance_type = "t3.micro"
@@ -26,6 +27,7 @@ resource "aws_instance" "master" {
   vpc_security_group_ids = ["${aws_security_group.k3s_master_sg.id}"]
 }
 
+# Worker nodes
 resource "aws_instance" "worker-1" {
   
   instance_type = "t3.micro"
