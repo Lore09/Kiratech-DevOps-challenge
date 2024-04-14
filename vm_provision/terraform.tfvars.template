@@ -1,0 +1,5 @@
+access_key = "access-key"
+secret_key = "secret_key"
+region = "eu-central-1"
+trusted_ip = "your ip"
+availability_zones = [ "eu-central-1a"]
