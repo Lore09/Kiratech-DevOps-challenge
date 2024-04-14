@@ -74,14 +74,25 @@ resource "aws_instance" "worker-2" {
   user_data = "${file("init-vm")}"
 }
 
-output "master_address" {
+output "master_public_address" {
   value = aws_instance.master.public_ip
 }
+output "master_private_address" {
+  value = aws_instance.master.private_ip
+}
 
-output "worker-1_address" {
+output "worker-1_public_address" {
   value = aws_instance.worker-1.public_ip
 }
 
-output "worker-2_address" {
+output "worker-1_private_address" {
+  value = aws_instance.worker-1.private_ip
+}
+
+output "worker-2_public_address" {
   value = aws_instance.worker-2.public_ip
+}
+
+output "worker-2_private_address" {
+  value = aws_instance.worker-2.private_ip
 }
