@@ -3,8 +3,8 @@
 The project is born as a code challenge, the purpose of which is to configure a kubernetes cluster and deploy some applications on it. The process has to be fully automatic and designed with IaC pattern
 
 ## Project requirements
-The cluster must be composed of a **master** and **two workers**, thus the infrastracture has to run on three separate vm. 
-The tool used for the virtual machines provisioning can be chosen as desired. The infrastracture and virtual machines has to follow the "minimum privilege" principle.
+The cluster must be composed of a **master** and **two workers**, thus the infrastructure has to run on three separate vm. 
+The tool used for the virtual machines provisioning can be chosen as desired. The infrastructure and virtual machines has to follow the "minimum privilege" principle.
 
 The VMs have to be configured using **Ansible**.
 
@@ -17,11 +17,11 @@ The last step is to configure the **continuous integration** and the code lintin
 
 ## Virtual Machine provisioning
 
-### Infrastracture
+### infrastructure
 
 The platform i used for the virtual machines hosting is AWS, that is for two main reasons:
 - Easy integration with IaC services, such as Terraform
-- All the infrastracture needed for this project falls in the AWS free plan.
+- All the infrastructure needed for this project falls in the AWS free plan.
 
 In particular, the VMs are **t3.micro** EC2 instances, with the following specs:
 - 2 vCpus
@@ -30,7 +30,7 @@ In particular, the VMs are **t3.micro** EC2 instances, with the following specs:
 
 This small VMs should be able to run a Kubernetes cluster based on **k3s**, a lighter version than usually deployed **k8s**.
 
-Regarding the network infrastracture the most important components are:
+Regarding the network infrastructure the most important components are:
 - **Vpc** with a single subnet
 - **Internet gateway** to allow the VMs to download updates and installation packets
 - **Security groups** for master and worker nodes. They are configured as such:
@@ -38,7 +38,7 @@ Regarding the network infrastracture the most important components are:
     - Port 6443 between master and worker nodes, default communication port used by k3s
     - All outbound traffic allowed
 
-The infrastracture is provisioned using Terraform
+The infrastructure is provisioned using Terraform
 ### Provisioning instructions
 Requirements:
 - Terraform cli installed (~> 5.0 version)
