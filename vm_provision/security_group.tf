@@ -58,7 +58,8 @@ resource "aws_security_group_rule" "Allow_from_master_to_worker" {
 }
 
 # Allow traffic from the worker to the master nodes
-resource "aws_security_group_rule" "Allow_from_worker_to_master" {
+# Kubernetes api
+resource "aws_security_group_rule" "Allow_from_worker_to_master_kubernetes_api" {
   type        = "ingress"
   from_port   = 6443
   to_port     = 6443
@@ -66,3 +67,12 @@ resource "aws_security_group_rule" "Allow_from_worker_to_master" {
   security_group_id = aws_security_group.k3s_master_sg.id
   source_security_group_id = aws_security_group.k3s_worker_sg.id
 } 
+
+resource "aws_security_group_rule" "Allow_from_worker_to_master_kubelet_metrics" {
+  type        = "ingress"
+  from_port   = 10250
+  to_port     = 10250
+  protocol    = "tcp"
+  security_group_id = aws_security_group.k3s_master_sg.id
+  source_security_group_id = aws_security_group.k3s_worker_sg.id
+}
