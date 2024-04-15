@@ -1,0 +1,10 @@
+plugin: amazon.aws.aws_ec2
+aws_region: eu-central-1
+hostnames:
+  - private-ip-address
+keyed_groups:
+  - key: tags.Type
+    separator: ''
+compose:
+  ansible_user: ansible
+  ansible_host: private-ip-address
