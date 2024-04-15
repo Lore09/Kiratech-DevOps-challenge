@@ -34,13 +34,15 @@ Regarding the network infrastructure the most important components are:
 - **Vpc** with a single subnet
 - **Internet gateway** to allow the VMs to download updates and installation packets
 - **Security groups** for master and worker nodes. They are configured as such:
-    - Port 22 inboud traffic only from trusted ips, used for the vm configuration and cluster installation
-    - Port 6443 between master and worker nodes, default communication port used by k3s
+    - Port 22 inboud traffic for the master only from trusted ips, used for the vm configuration and cluster installation
+    - Port 6443 between master and worker nodes, default communication port used by k3s api
+    - Port 10250 between all the nodes, used by the kubelet metrics
     - All outbound traffic allowed
 
-The infrastructure is provisioned using Terraform
+The security configuration is based on the suggested configs provided by [k3s installation guide](https://docs.k3s.io/installation/requirements#network).
 ### Provisioning instructions
-Requirements:
+The infrastructure is provisioned using Terraform.
+#### Requirements:
 - Terraform cli installed (~> 5.0 version)
 - Working AWS account with IAM role and access keys
 - SSH keypair
