@@ -3,6 +3,12 @@
 - name: "Installing k3s worker"
   vars:
     master_address : "https://{{ hostvars['master'].ansible_host }}:6443"
-  ansible.builtin.shell: "curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC='agent' sh -s - --node-name {{ inventory_hostname }} --token {{ k3s_token }} --server {{ master_address }}"
+  ansible.builtin.shell: |
+                          curl -sfL https://get.k3s.io | \
+                          sh -s - agent \
+                          --write-kubeconfig-mode 644 \
+                          --node-name {{ inventory_hostname }} \
+                          --token {{ k3s_token }} \
+                          --server {{ master_address }}
   register: k3s_install
   changed_when: k3s_install.rc != 0
