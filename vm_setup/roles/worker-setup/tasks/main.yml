@@ -1,6 +1,7 @@
 ---
 # tasks file for worker-setup
 - name: "Installing k3s worker"
+  become: true
   vars:
     master_address : "https://{{ hostvars['master'].ansible_host }}:6443"
   ansible.builtin.shell: |

@@ -10,6 +10,13 @@ resource "aws_security_group" "k3s_master_sg" {
     cidr_blocks = [format("%s/32", var.trusted_ip)]
   }
 
+  ingress {
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
   # Allow all outbound traffic
   egress {
     from_port   = 0
