@@ -9,6 +9,6 @@
                           --token {{ k3s_token }} \
                           --bind-address {{ hostvars['master'].ansible_host }} \
                           --node-external-ip {{ hostvars['master'].public_ip_address }} \
-                          --cluster-init"
+                          --cluster-init
   register: k3s_install
   changed_when: k3s_install.rc != 0

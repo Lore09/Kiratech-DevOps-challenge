@@ -66,6 +66,7 @@ resource "aws_instance" "worker-1" {
   }
   key_name = aws_key_pair.local_key_pair.key_name
 
+  associate_public_ip_address = true
   subnet_id = "${aws_subnet.k3s_subnet[0].id}"
   vpc_security_group_ids = ["${aws_security_group.k3s_worker_sg.id}"]
   
@@ -82,6 +83,8 @@ resource "aws_instance" "worker-2" {
     Project = "DevOps Challenge"
   }
   key_name = aws_key_pair.local_key_pair.key_name
+
+  associate_public_ip_address = true
   subnet_id = "${aws_subnet.k3s_subnet[0].id}"
   vpc_security_group_ids = ["${aws_security_group.k3s_worker_sg.id}"]
 
