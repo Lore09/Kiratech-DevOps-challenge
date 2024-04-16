@@ -12,4 +12,4 @@ groups:
 
 compose:
   ansible_user: ansible
-  ansible_host: private-ip-address
+  ansible_host: private_ip_address

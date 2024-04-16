@@ -3,4 +3,4 @@
 - name: "Installing k3s master"
   become: true
   ansible.builtin.command:
-    cmd: "curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC='server' sh -s - --flannel-backend none --token {{ k3s_token }} --bind-address {{ hostvars['master'].master.private_ip_address }}"
+    cmd: "curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC='server' sh -s - --flannel-backend none --token {{ k3s_token }} --bind-address {{ hostvars['master'].master.ansible_host }}"
