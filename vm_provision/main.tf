@@ -24,7 +24,7 @@ resource "aws_instance" "master" {
   instance_type = "t3.micro"
   ami = "ami-04f9a173520f395dd"
   tags = {
-    Group = "masters"
+    Group = "server"
     Name = "master"
     Project = "DevOps Challenge"
   }
@@ -60,7 +60,7 @@ resource "aws_instance" "worker-1" {
   instance_type = "t3.micro"
   ami = "ami-04f9a173520f395dd"
   tags = {
-    Group = "workers"
+    Group = "agent"
     Name = "worker-1"
     Project = "DevOps Challenge"
   }
@@ -78,7 +78,7 @@ resource "aws_instance" "worker-2" {
   instance_type = "t3.micro"
   ami = "ami-04f9a173520f395dd"
   tags = {
-    Group = "workers"
+    Group = "agent"
     Name = "worker-2"
     Project = "DevOps Challenge"
   }

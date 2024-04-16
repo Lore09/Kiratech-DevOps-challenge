@@ -13,3 +13,9 @@ groups:
 compose:
   ansible_user: ansible
   ansible_host: private_ip_address
+  ansible_port: 22
+  k3s_version: v1.26.9+k3s1
+  token: "KiratechChallenge"  # Use ansible vault if you want to keep it secret
+  api_endpoint: "{{ hostvars[groups['server'][0]]['ansible_host'] | default(groups['server'][0]) }}"
+  extra_server_args: ""
+  extra_agent_args: ""
