@@ -2,6 +2,6 @@
 # tasks file for master-setup
 - name: "Installing k3s master"
   become: true
-  ansible.builtin.shell: "curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC='server' sh -s - --flannel-backend none --token {{ k3s_token }} --cluster-init"
+  ansible.builtin.shell: "curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC='server' sh -s - --flannel-backend none --token {{ k3s_token }} --bind-address {{ hostvars['master'].master.ansible_host }} --cluster-init"
   register: k3s_install
   changed_when: k3s_install.rc != 0

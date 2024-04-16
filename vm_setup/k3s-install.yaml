@@ -4,16 +4,16 @@
   roles:
     - role: k3s-prereq
 - name: "Master setup"
-  hosts: master
+  hosts: masters
   become: true
   vars:
     k3s_token: "KiratechDevOpsChallenge"
   roles:
     - role: master-setup
-# - name: "Worker setup"
-#   hosts: k3s_workers
-#   become: true
-#   vars:
-#     k3s_token: "KiratechDevOpsChallenge"
-#   roles:
-#     - role: worker-setup
+- name: "Workers setup"
+  hosts: workers
+  become: true
+  vars:
+    k3s_token: "KiratechDevOpsChallenge"
+  roles:
+    - role: worker-setup

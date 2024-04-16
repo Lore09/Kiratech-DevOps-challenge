@@ -1,2 +1,7 @@
 ---
 # tasks file for worker-setup
+- name: "Installing k3s worker"
+  become: true
+  ansible.builtin.shell: "curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC='agent' sh -s - --token {{ k3s_token }} --server https://{{ hostvars['master'].master.ansible_host }} "
+  register: k3s_install
+  changed_when: k3s_install.rc != 0
