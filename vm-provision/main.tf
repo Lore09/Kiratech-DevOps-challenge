@@ -21,7 +21,7 @@ resource "aws_key_pair" "local_key_pair" {
 # Master node
 resource "aws_instance" "master" {
   
-  instance_type = "t3.micro"
+  instance_type = "t3.medium"
   ami = "ami-023adaba598e661ac"
   tags = {
     Group = "server"
@@ -57,7 +57,7 @@ resource "aws_instance" "master" {
 # Worker nodes
 resource "aws_instance" "worker-1" {
   
-  instance_type = "t3.micro"
+  instance_type = "t3.medium"
   ami = "ami-023adaba598e661ac"
   tags = {
     Group = "agent"
@@ -75,7 +75,7 @@ resource "aws_instance" "worker-1" {
 
 resource "aws_instance" "worker-2" {
   
-  instance_type = "t3.micro"
+  instance_type = "t3.medium"
   ami = "ami-023adaba598e661ac"
   tags = {
     Group = "agent"
