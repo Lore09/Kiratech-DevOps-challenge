@@ -11,7 +11,7 @@ resource "aws_vpc" "k3s_vpc" {
 resource "aws_subnet" "k3s_subnet" {
   count             = 1
   vpc_id            = aws_vpc.k3s_vpc.id
-  cidr_block        = "10.0.0.0/24"
+  cidr_block        = "10.0.${count.index}.0/24"
   availability_zone = var.availability_zones[count.index]
 
   tags = {

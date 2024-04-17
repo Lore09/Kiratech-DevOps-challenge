@@ -1,6 +1,0 @@
-- name: "Turning off ufw"
-  become: true
-  ansible.builtin.command:
-    cmd: 'ufw disable'
-  register: ufw
-  changed_when: ufw.rc != 0
