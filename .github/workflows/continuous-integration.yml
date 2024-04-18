@@ -6,7 +6,7 @@ on:
 jobs:
   terraform-lint:
     runs-on: ubuntu-latest
-    name: Ansible Lint 
+    name: Terraforn Lint 
     steps:
     - name: Checkout
       uses: actions/checkout@v3
