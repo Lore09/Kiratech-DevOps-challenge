@@ -1,13 +1,21 @@
-name: Check TFLint
+name: Continuous Integration
 on:
   push:
     branches:
       - "master"
 jobs:
-  format-hcl:
+  terraform-lint:
     runs-on: ubuntu-latest
+    name: Ansible Lint 
     steps:
     - name: Checkout
       uses: actions/checkout@v3
     - name: Check linting of Terraform files
       uses: devops-infra/action-tflint@v0.3
+  ansible-lint:
+    name: Ansible Lint # Naming the build is important to use it as a status check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run ansible-lint
+        uses: ansible/ansible-lint@main # or version tag instead of 'main'
