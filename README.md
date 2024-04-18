@@ -23,23 +23,23 @@ The platform i used for the virtual machines hosting is AWS, that is for two mai
 - Easy integration with IaC services, such as Terraform
 - All the infrastructure needed for this project falls in the AWS free plan.
 
-In particular, the VMs are **t3.micro** EC2 instances, with the following specs:
+In particular, the VMs are **t3.medium** EC2 instances, with the following specs:
 - 2 vCpus
-- 1 Gb RAM
+- 4 Gb RAM
 - 5 Gbit max band burst
 
-This small VMs should be able to run a Kubernetes cluster based on **k3s**, a lighter version than usually deployed **k8s**.
+This relatively small VMs should be able to run a Kubernetes cluster based on **k3s**, a lighter version than usually deployed **k8s**.
 
 Regarding the network infrastructure the most important components are:
 - **Vpc** with a single subnet
 - **Internet gateway** to allow the VMs to download updates and installation packets
 - **Security groups** for master and worker nodes. They are configured as such:
-    - Port 22 inboud traffic for the master only from trusted ips, used for the vm configuration and cluster installation
-    - Port 6443 between master and worker nodes, default communication port used by k3s api
-    - Port 10250 between all the nodes, used by the kubelet metrics
-    - All outbound traffic allowed
+    - **Ingress traffic** - port 6443/tcp, 22/tcp onfly for master node and 443/tcp, 80/tcp, 8472/udp for both master and workers 
+    - **Internal traffic** - all traffic allowed from workers to master and port 6443/tcp, 10250/tcp from master to workers
+    - **Egress traffic** - all traffic allowed
 
 The security configuration is based on the suggested configs provided by [k3s installation guide](https://docs.k3s.io/installation/requirements#network).
+
 ### Provisioning instructions
 The infrastructure is provisioned using Terraform.
 #### Requirements:
