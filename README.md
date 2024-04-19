@@ -166,9 +166,9 @@ Once the installation is over, you 'll need to get the kubernetes configuration 
 
 ```bash
 cd ~
-sudo cp  /etc/rancher/k3s/config.yaml .
-sudo chown ansible config.yaml  
-chmod 600 config.yaml
+sudo cp  /etc/rancher/k3s/k3s.yaml .
+sudo chown ansible k3s.yaml  
+chmod 600 k3s.yaml
 ```
 Now you will need to disconnect the ssh communication from the control node. The following commands are executed **in the local machine**
 
@@ -176,8 +176,9 @@ Enter the `cluster-setup` directory and copy the config file from the control no
 ```bash
 cd cluster-setup
 
-scp ansible@master-public-ip:/home/ansible/config.yaml .
+scp -i ../env/ssh-key ansible@master-public-ip:/home/ansible/k3s.yaml .
 ```
+Edit the k3s.yaml file and replace the address of kubernetes server with the master public ip (replace `127.0.0.1` with the public ip)
 
 ### Namespace creation and kube-bench
 
