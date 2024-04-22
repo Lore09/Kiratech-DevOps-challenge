@@ -101,7 +101,7 @@ cd cluster-setup
 ssh ansible@master-public-address -i ../env/ssh-key
 ```
 
-The address of the master node is the one provided by the previous steps. If the error `access denied: public key` error shows up just wait a few minutes, then try again with the connection (the vm is not fully configured yet, therefore the public key has not been added to the authorized hosts).
+The address of the master node is the one provided by the previous steps. If the `access denied: public key` error shows up just wait a few minutes, then try again with the connection (the vm is not fully configured yet, therefore the public key has not been added to the authorized hosts).
 
 Now that you have access to the `control node` you need to clone the [`K3s Ansible`](https://github.com/k3s-io/k3s-ansible) repository from github.
 
@@ -156,7 +156,7 @@ extra_agent_args: ""
 
 You will need to create both files (name them exactly `inventory.aws_ec2.yaml` and `vars.yaml`) and paste inside the previous configuration.
 
-You can now ru your Ansible playbook and install the k3s cluster
+You can now run your Ansible playbook and install the k3s cluster
 
 ```bash
 ansible-playbook -i inventory.aws_ec2.yaml -e @vars.yaml playbook/site.yml
@@ -204,7 +204,7 @@ After this, two new resources are created:
 
 ### Application deployment
 
-The application i chose to deploy is Jenkins, a tool for used for managing CI/CD pipelines and for other devops tasks.
+The application i chose to deploy is Jenkins, a tool used for managing CI/CD pipelines and for other devops tasks.
 
 The application has to be deployed via helm in the `kiratech-test` namespace
 
@@ -260,7 +260,7 @@ spec:
 
 Create the ingress
 ```bash
-kubectl apply =f ingress.yaml -n kiratech-test
+kubectl apply -f ingress.yaml -n kiratech-test
 ```
 
 If you add the domain `jenkins.cluster.local` to your host file you should be able to access it from the browser
@@ -269,7 +269,7 @@ If you add the domain `jenkins.cluster.local` to your host file you should be ab
 
 ## Continuous Integration
 
-The continuos integration has been configured using a GitHub actions that runs `Ansible lint` and `Terraform lint` tools for every commit that modifies yaml files in the `master` branch.
+The continuos integration has been configured using a GitHub actions that runs `Ansible lint` and `Terraform lint` tools for every commit that modifies yaml and Terraform files in the `master` branch.
 
 References:
 - [Terraform provider for AWS](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/instance)

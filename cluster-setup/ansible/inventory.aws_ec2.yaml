@@ -6,10 +6,9 @@ hostnames:
 keyed_groups:
   - key: tags.Group
     separator: ''
-
 groups:
   k3s-cluster: "'DevOps Challenge' in tags.Project"
-
 compose:
   ansible_user: ansible
   ansible_host: private_ip_address
+  
