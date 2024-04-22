@@ -235,8 +235,37 @@ You should see Jenkins running
 
 ![Jenkins](res/jenkins.png "Jenkins")
 
-In order to access to jenkins web ui you need to expose the service
+In order to access to Jenkins web ui you need to expose the service, so you need to edit the svc created by the helm chart and change it to `type=LoadBalancer`.
 
+You will need also to create a kubernetes ingress to allow access from external network. Create a file `ingress.yaml` with the following content
+
+```yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: jenkins-ingress
+spec:
+  rules:
+  - host: "jenkins.cluster.local"
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: my-jenkins
+            port:
+              number: 8080
+```
+
+Create the ingress
+```bash
+kubectl apply =f ingress.yaml -n kiratech-test
+```
+
+If you add the domain `jenkins.cluster.local` to your host file you should be able to access it from the browser
+
+!["Jenkins UI"](res/jenkins-ui.png)
 
 ## Continuous Integration
 
