@@ -12,6 +12,7 @@ jobs:
         uses: actions/checkout@v3
       - name: Check linting of Terraform files
         uses: devops-infra/action-tflint@v0.3
+
   ansible-lint:
     name: Ansible Lint # Naming the build is important to use it as a status check
     runs-on: ubuntu-latest
